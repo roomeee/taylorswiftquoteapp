@@ -1,30 +1,36 @@
 from tkinter import *
 import requests
 
-def get_quote():
-    pass
-    res=requests.get("https://taylorswiftapi.onrender.com/get")
-    res.raise_for_status()
-    data=res.json()
-    quote=data["quote"]
-    canvas.itemconfig(quote_text, text=quote)
+
+class TaylorQuoteApp:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("Taylor Swift Quotes")
+        self.root.config(padx=50, pady=50)
+
+        self.canvas = Canvas(width=300, height=414)
+        self.background_img = PhotoImage(file="background_edited (1).png")
+        self.canvas.create_image(150, 207, image=self.background_img)
+        self.quote_text = self.canvas.create_text(150, 207, text="Lyrics Go Here", width=250,
+                                                  font=("Arial", 18, "bold"), fill="white")
+        self.canvas.grid(row=0, column=0, columnspan=2)
+
+        self.taylor_img = PhotoImage(file="taylor.png.png")
+        self.taylor_button = Button(image=self.taylor_img, highlightthickness=0, command=self.get_quote)
+        self.taylor_button.grid(row=1, column=0, columnspan=2)
+
+    def get_quote(self):
+        try:
+            response = requests.get("https://taylorswiftapi.onrender.com/get")
+            response.raise_for_status()
+            data = response.json()
+            quote = data["quote"]
+            self.canvas.itemconfig(self.quote_text, text=quote)
+        except requests.exceptions.RequestException as e:
+            self.canvas.itemconfig(self.quote_text, text="Error fetching quote.")
 
 
-
-window = Tk()
-window.title("Taylor says...")
-window.config(padx=50, pady=50)
-
-canvas = Canvas(width=300, height=414)
-background_img = PhotoImage(file="background_edited (1).png")
-canvas.create_image(150, 207, image=background_img,)
-quote_text = canvas.create_text(150, 207, text="Lyrics Goes HERE", width=250, font=("Arial", 24, "bold"), fill="white")
-canvas.grid(row=0, column=0)
-
-taylor_img = PhotoImage(file="taylor.png.png")
-taylor_button = Button(image=taylor_img, highlightthickness=0, command=get_quote)
-taylor_button.grid(row=1, column=0)
-
-
-
-window.mainloop()
+if __name__ == "__main__":
+    root = Tk()
+    app = TaylorQuoteApp(root)
+    root.mainloop()

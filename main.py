@@ -24,7 +24,7 @@ class TaylorQuoteApp:
             response = requests.get("https://taylorswiftapi.onrender.com/get")
             response.raise_for_status()
             data = response.json()
-            quote = data["quote"]
+            quote = datax["quote"]
             self.canvas.itemconfig(self.quote_text, text=quote)
         except requests.exceptions.RequestException as e:
             self.canvas.itemconfig(self.quote_text, text="Error fetching quote.")

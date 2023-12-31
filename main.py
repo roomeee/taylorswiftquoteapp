@@ -5,7 +5,7 @@ import requests
 class TaylorQuoteApp:
     def __init__(self, root):
         self.root = root
-        self.root.title("Taylor Swift Quotes")
+        self.root.title("Taylor Swift Quotes Lyrics")
         self.root.config(padx=50, pady=50)
 
         self.canvas = Canvas(width=300, height=414)
@@ -27,7 +27,7 @@ class TaylorQuoteApp:
             quote = datax["quote"]
             self.canvas.itemconfig(self.quote_text, text=quote)
         except requests.exceptions.RequestException as e:
-            self.canvas.itemconfig(self.quote_text, text="Error fetching quote.")
+            self.canvas.itemconfig(self.quote_text, text="Error fetching the lyric.")
 
 
 if __name__ == "__main__":
